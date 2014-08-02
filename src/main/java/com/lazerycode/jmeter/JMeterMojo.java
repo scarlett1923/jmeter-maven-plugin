@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * JMeter Maven plugin.
+ *
  */
 @Mojo(name = "jmeter")
 public class JMeterMojo extends JMeterAbstractMojo {
@@ -45,7 +46,7 @@ public class JMeterMojo extends JMeterAbstractMojo {
 		if (null != remoteConfig) {
 			remoteConfig.setMasterPropertiesMap(pluginProperties.getMasterPropertiesMap());
 		}
-		TestManager jMeterTestManager = new TestManager(testArgs, testFilesDirectory, testFilesIncluded, testFilesExcluded, remoteConfig, suppressJMeterOutput, binDir, jMeterProcessJVMSettings);
+		TestManager jMeterTestManager = new TestManager(testArgs, testFilesDirectory,configFileDirectory, testFilesIncluded, testFilesExcluded, remoteConfig, suppressJMeterOutput, binDir, jMeterProcessJVMSettings,retryTimes);
 		getLog().info(" ");
 		if (proxyConfig != null) {
 			getLog().info(this.proxyConfig.toString());

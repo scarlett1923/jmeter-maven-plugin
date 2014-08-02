@@ -1,7 +1,12 @@
-package com.lazerycode.jmeter;
+package com.lazerycode.jmeter.model;
 
-import java.io.File;
-import java.io.IOException;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+
+import java.io.*;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -10,14 +15,13 @@ import java.util.regex.Pattern;
  *
  * @author Jon Roberts
  */
-class FailureScanner {
+public class FailureAnalyse {
 
 	private static final String REQUEST_FAILURE_PATTERN = "s=\"false\"";
-	private final boolean ignoreFailures;
 	private int failureCount;
 
-	public FailureScanner(boolean ignoreFailures) {
-		this.ignoreFailures = ignoreFailures;
+	public FailureAnalyse() {
+
 	}
 
 	/**
@@ -25,10 +29,10 @@ class FailureScanner {
 	 *
 	 * @param file File to parse for failures
 	 * @return true if file doesn't contain failures
-	 * @throws IOException
+	 * @throws java.io.IOException
 	 */
 	public boolean hasTestFailed(File file) throws IOException {
-		if (this.ignoreFailures) return false;
+
 		failureCount = 0;
 		Scanner resultFileScanner;
 		Pattern errorPattern = Pattern.compile(REQUEST_FAILURE_PATTERN);
@@ -39,6 +43,22 @@ class FailureScanner {
 		resultFileScanner.close();
 
 		return this.failureCount > 0;
+
+	}
+	public boolean IsTestFailed(File file) throws IOException,DocumentException {
+
+		SAXReader reader = new SAXReader();
+		Document document = reader.read(new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8")));
+		Element rootElm = document.getRootElement();
+		List<Element> result = rootElm.selectNodes("//httpSample[@s='false']");
+
+		if(result.size()>0){
+		     return true;
+		}else
+		{
+			return false;
+		}
+
 	}
 
 	/**

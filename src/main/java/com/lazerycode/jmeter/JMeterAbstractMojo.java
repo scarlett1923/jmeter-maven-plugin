@@ -51,6 +51,11 @@ public abstract class JMeterAbstractMojo extends AbstractMojo {
 	protected File testFilesDirectory;
 
 	/**
+	 * Path under which config.xml file is stored.
+	 */
+	@Parameter(defaultValue = "${basedir}")
+	protected File configFileDirectory;
+	/**
 	 * Timestamp the test results.
 	 */
 	@Parameter(defaultValue = "true")
@@ -160,6 +165,12 @@ public abstract class JMeterAbstractMojo extends AbstractMojo {
 	 */
 	@Parameter
 	protected JMeterProcessJVMSettings jMeterProcessJVMSettings;
+
+	/**
+	 * Value if test failes,the most times will  retry.
+	 */
+	@Parameter(defaultValue = "0")
+	protected int retryTimes;
 
 	/**
 	 * Set a root log level to override all log levels used by JMeter
